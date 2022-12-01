@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ $1 == "-h" ] || [ $1 == "--help" ] || [ $# -ne 3 ]
+then
+    echo "Replaces all instances of a pattern within a folder with a substitute.
+
+Usage: replace [PATTERN] [REPLACEMENT] [LOCATION]"
+else
+    # This currently will not work if pattern or replacement have a '|'
+    grep -rl $1 $3 | xargs sed -i "s|$1|$2|g"
+fi
