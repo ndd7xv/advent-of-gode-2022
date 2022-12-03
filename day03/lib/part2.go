@@ -50,5 +50,13 @@ func findShared(arr []string) rune {
 		}
 	}
 
+	/*
+		for _, ch := range arr[0] {
+		if strings.Contains(arr[1], string(ch)) && strings.Contains(arr[2], string(ch)) {
+			return ch
+		}
+	}
+	*/
+
 	panic("Should've found shared item!")
 }
