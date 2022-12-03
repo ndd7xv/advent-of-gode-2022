@@ -1,3 +1,13 @@
-In hasty anticipation of AoC 2022! I was originally going to do this in elixir, but realized learning a language so fundamentally different than the ones I use at work would require too much time and effort.
+# advent-of-code-2021
 
-... Go it is then!
+**I am doing this to get more comfortable with Go.** It's not perfect, and I compare my answers to others _after_ I've completed the puzzle.
+
+## Running
+
+To try a day from the root of this repository, run
+
+```
+./run <dayXX> <1|2>
+```
+
+This essentially changes the directory to `<dayXX>` and runs `go run main.go`, which takes either a '1' or '2' and runs the corresponding part.
