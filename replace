@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $1 == "-h" ] || [ $1 == "--help" ] || [ $# -ne 3 ]
+if [ "$1" == "-h" ] || [ "$1" == "--help" ] || [ $# -ne 3 ]
 then
     echo "Replaces all instances of a pattern within a folder with a substitute.
 
