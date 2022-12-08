@@ -2,13 +2,13 @@ package day04
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 )
 
 func Part2() {
-	input, _ := ioutil.ReadFile("inputs/test.txt")
+	input, _ := os.ReadFile("inputs/test.txt")
 
 	score := 0
 

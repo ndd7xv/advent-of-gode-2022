@@ -2,11 +2,11 @@ package day06
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 )
 
 func Part1() {
-	input, _ := ioutil.ReadFile("inputs/input1.txt")
+	input, _ := os.ReadFile("inputs/input1.txt")
 
 	for i := 0; i < len(input)-4; i++ {
 		scan := input[i:i+4];

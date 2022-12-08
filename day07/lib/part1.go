@@ -2,13 +2,13 @@ package day07
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 )
 
 func Part1() {
-	input, _ := ioutil.ReadFile("inputs/input1.txt")
+	input, _ := os.ReadFile("inputs/input1.txt")
 
 	root := CreateFileSystem(input)
 

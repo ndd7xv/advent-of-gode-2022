@@ -2,12 +2,12 @@ package day21
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 )
 
 func Part1() {
-	input, _ := ioutil.ReadFile("inputs/input1.txt")
+	input, _ := os.ReadFile("inputs/input1.txt")
 
 	for _, line := range strings.Split(string(input), "\n") {
 		if line == "" {

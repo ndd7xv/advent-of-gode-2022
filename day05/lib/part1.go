@@ -3,7 +3,7 @@ package day05
 import (
 	"fmt"
 	"github.com/golang-collections/collections/stack"
-	"io/ioutil"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -11,7 +11,7 @@ import (
 )
 
 func Part1() {
-	input, _ := ioutil.ReadFile("inputs/input1.txt")
+	input, _ := os.ReadFile("inputs/input1.txt")
 
 	splitInput := strings.Split(string(input), "\n\n")
 	cratePositions := splitInput[0]

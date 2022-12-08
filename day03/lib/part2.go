@@ -2,12 +2,12 @@ package day03
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 )
 
 func Part2() {
-	input, _ := ioutil.ReadFile("inputs/input1.txt")
+	input, _ := os.ReadFile("inputs/input1.txt")
 	score := 0
 
 	var elves []string
