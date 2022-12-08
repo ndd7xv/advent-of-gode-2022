@@ -10,13 +10,20 @@ import (
 func Part1() {
 	input, _ := ioutil.ReadFile("inputs/input1.txt")
 
+	root := CreateFileSystem(input)
+
+	fmt.Println(sumSizesLessThan100000(root))
+}
+
+// CreateFileSystem reads input and interprets the commands to formulate a tree.
+// We skip over the initial cd because we assume that is standard for all inputs and everyone
+// starts at /. We assume also that when `$ cd` is used, it is used correctly for an existing
+// and known file.
+func CreateFileSystem(input []byte) *SystemResource {
 	root := NewResource("/", nil, true)
 	parentDir := []*SystemResource{root}
 	currentDir := root
 
-	// We skip over the initial cd because we assume that is standard for all inputs and everyone
-	// starts at /. We assume also that when `$ cd` is used, it is used correctly for an existing
-	// and known file.
 	for i, line := range strings.Split(string(input), "\n") {
 		if i == 0 {
 			continue
@@ -51,8 +58,7 @@ func Part1() {
 			currentDir.AddFile(NewResource(newFile, Of(fileSize), false))
 		}
 	}
-
-	fmt.Println(sumSizesLessThan100000(root))
+	return root
 }
 
 // Recursive call on directories that returns their cumulative sizes if less than 100000
