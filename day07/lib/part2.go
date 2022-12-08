@@ -2,12 +2,12 @@ package day07
 
 import (
 	"fmt"
-	"os"
 	"math"
+	"os"
 )
 
 func Part2() {
-	input, _ := os.ReadFile("inputs/test.txt")
+	input, _ := os.ReadFile("day07/inputs/input1.txt")
 
 	root := CreateFileSystem(input)
 	freeTarget := 30000000 - (70000000 - root.GetSize())

@@ -11,7 +11,7 @@ import (
 )
 
 func Part1() {
-	input, _ := os.ReadFile("inputs/input1.txt")
+	input, _ := os.ReadFile("day05/inputs/input1.txt")
 
 	splitInput := strings.Split(string(input), "\n\n")
 	cratePositions := splitInput[0]

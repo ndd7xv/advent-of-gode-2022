@@ -6,7 +6,7 @@ import (
 )
 
 func Part2() {
-	input, _ := os.ReadFile("inputs/input1.txt")
+	input, _ := os.ReadFile("day06/inputs/input1.txt")
 
 	for i := 0; i < len(input)-14; i++ {
 		scan := input[i:i+14];

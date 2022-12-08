@@ -10,7 +10,7 @@ import (
 )
 
 func Part2() {
-	file, _ := os.Open("inputs/input1.txt")
+	file, _ := os.Open("day01/inputs/input1.txt")
 	defer file.Close()
 	reader := bufio.NewReader(file)
 

@@ -7,7 +7,7 @@ import (
 )
 
 func Part1() {
-	input, _ := os.ReadFile("inputs/input1.txt")
+	input, _ := os.ReadFile("day02/inputs/input1.txt")
 
 	score := 0
 
