@@ -20,37 +20,35 @@ func Part2() {
 
 		increment := 0
 		commands := strings.Split(line, " ")
-		if commands[0] == "noop" {
-			cycle++
-		} else {
-			parse, _ := strconv.Atoi(commands[1])
-			increment = parse
-			cycle++
-			//fmt.Printf("\nDrawing Cycle %d where CRT is %d\n", cycle, X)
-			if (cycle-1)-X == 1 || X-(cycle-1) == 1 || X == (cycle-1) {
-				fmt.Print("#")
-			} else {
-				fmt.Print(".")
-			}
-			if (cycle)%40 == 0 {
-				cycle = 0
-				fmt.Println()
-			}
-			cycle++
-		}
 
-		//fmt.Printf("\nDrawing Cycle %d where CRT is %d\n", cycle, X)
-		if (cycle-1)-X == 1 || X-(cycle-1) == 1 || X == (cycle-1) {
-			fmt.Print("#")
-		} else {
-			fmt.Print(".")
+		// Account for additional cycle taken in addx
+		if commands[0] == "addx" {
+			cycle = runCycle(cycle, X)
+			increment, _ = strconv.Atoi(commands[1])
 		}
-
-		if (cycle)%40 == 0 {
-			cycle = 0
-			fmt.Println()
-		}
+		cycle = runCycle(cycle, X)
 
 		X += increment
+	}
+}
+
+func runCycle(cycle int, X int) int {
+	cycle++
+	printPixel(cycle, X)
+	if (cycle)%40 == 0 {
+		cycle = 0
+	}
+	return cycle
+}
+
+func printPixel(cycle int, X int) {
+	if (cycle-1)-X == 1 || X-(cycle-1) == 1 || X == (cycle-1) {
+		fmt.Print("#")
+	} else {
+		fmt.Print(".")
+	}
+
+	if (cycle)%40 == 0 {
+		fmt.Println()
 	}
 }

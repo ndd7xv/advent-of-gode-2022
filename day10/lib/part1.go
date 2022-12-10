@@ -8,11 +8,13 @@ import (
 )
 
 func Part1() {
-	input, _ := os.ReadFile("day10/inputs/test1.txt")
+	input, _ := os.ReadFile("day10/inputs/input1.txt")
+
+	haveReached := make(map[int]bool)
+	thresholds := []int{220, 180, 140, 100, 60, 20}
 
 	X := 1
 	cycle := 0
-	triggered := make(map[int]bool)
 	sum := 0
 
 	for _, line := range strings.Split(string(input), "\n") {
@@ -25,35 +27,16 @@ func Part1() {
 		if commands[0] == "noop" {
 			cycle++
 		} else {
-			parse, _ := strconv.Atoi(commands[1])
-			increment = parse
+			increment, _ = strconv.Atoi(commands[1])
 			cycle += 2
 		}
 
-		if _, ok := triggered[220]; cycle >= 220 && !ok {
-			fmt.Println(X)
-			sum += (X * 220)
-			triggered[220] = true
-		} else if _, ok := triggered[180]; cycle >= 180 && !ok {
-			fmt.Println(X)
-			sum += (X * 180)
-			triggered[180] = true
-		} else if _, ok := triggered[140]; cycle >= 140 && !ok {
-			fmt.Println(X)
-			sum += (X * 140)
-			triggered[140] = true
-		} else if _, ok := triggered[100]; cycle >= 100 && !ok {
-			fmt.Println(X)
-			sum += (X * 100)
-			triggered[100] = true
-		} else if _, ok := triggered[60]; cycle >= 60 && !ok {
-			fmt.Println(X)
-			sum += (X * 60)
-			triggered[60] = true
-		} else if _, ok := triggered[20]; cycle >= 20 && !ok {
-			fmt.Println(X)
-			sum += (X * 20)
-			triggered[20] = true
+		for _, check := range thresholds {
+			if _, ok := haveReached[check]; cycle >= check && !ok {
+				sum += (X * check)
+				haveReached[check] = true
+				break
+			}
 		}
 
 		X += increment
