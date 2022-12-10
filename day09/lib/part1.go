@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// Coordinate represents a point where a knot in the rope could be
 type Coordinate struct {
 	x int
 	y int
@@ -15,11 +16,18 @@ type Coordinate struct {
 func Part1() {
 	input, _ := os.ReadFile("day09/inputs/input1.txt")
 
-	tailLocations := make(map[Coordinate]bool)
 	head := Coordinate{0, 0}
 	tail := Coordinate{0, 0}
 
+	// A set of locations the tail has been
+	tailLocations := make(map[Coordinate]bool)
 	tailLocations[tail] = true
+
+	directionUpdates := make(map[string]Coordinate)
+	directionUpdates["U"] = Coordinate{0, 1}
+	directionUpdates["D"] = Coordinate{0, -1}
+	directionUpdates["L"] = Coordinate{-1, 0}
+	directionUpdates["R"] = Coordinate{1, 0}
 
 	for _, line := range strings.Split(string(input), "\n") {
 		if line == "" {
@@ -30,44 +38,22 @@ func Part1() {
 		direction := words[0]
 		steps, _ := strconv.Atoi(words[1])
 
-		fmt.Printf("%s %s\n", direction, words[1])
-		switch direction {
-		case "U":
-			for i := 0; i < steps; i++ {
-				head = Coordinate{head.x, head.y + 1}
-				head, tail = ReadjustTail(head, tail)
-				tailLocations[tail] = true
-			}
-		case "D":
-			for i := 0; i < steps; i++ {
-				head = Coordinate{head.x, head.y - 1}
-				head, tail = ReadjustTail(head, tail)
-				tailLocations[tail] = true
-			}
-		case "L":
-			for i := 0; i < steps; i++ {
-				head = Coordinate{head.x - 1, head.y}
-				head, tail = ReadjustTail(head, tail)
-				tailLocations[tail] = true
-			}
-		case "R":
-			for i := 0; i < steps; i++ {
-				head = Coordinate{head.x + 1, head.y}
-				head, tail = ReadjustTail(head, tail)
-				tailLocations[tail] = true
-			}
+		for i := 0; i < steps; i++ {
+			dX, dY := directionUpdates[direction].x, directionUpdates[direction].y
+			head = Coordinate{head.x + dX, head.y + dY}
+			head, tail = ReadjustTail(head, tail)
+			tailLocations[tail] = true
 		}
 	}
 	fmt.Println(len(tailLocations))
 }
 
+// ReadjustTail checks two adjacent knot coordinates to determine if the successive knot should be
+// moved to be adjacent with the knot before it.
 func ReadjustTail(head, tail Coordinate) (
 	Coordinate,
 	Coordinate,
 ) {
-
-	fmt.Printf("Head %d %d | Tail %d %d... to", head.x, head.y, tail.x, tail.y)
-
 	dX := head.x - tail.x
 	dY := head.y - tail.y
 	if (head.x != tail.x && head.y != tail.y) && ((-2 >= dX || dX >= 2) || (-2 >= dY || dY >= 2)) {
@@ -94,7 +80,6 @@ func ReadjustTail(head, tail Coordinate) (
 			tail.y--
 		}
 	}
-	fmt.Printf(" Head %d %d | Tail %d %d\n", head.x, head.y, tail.x, tail.y)
 
 	return head, tail
 }
