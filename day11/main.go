@@ -1,7 +1,7 @@
 package main
 
 import (
-	"day11/lib"
+	day11 "day11/lib"
 	"os"
 )
 
