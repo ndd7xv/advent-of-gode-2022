@@ -2,20 +2,17 @@ package day12
 
 import (
 	"fmt"
-	"math"
 	"os"
 	"strings"
 )
 
 func Part2() {
-	input, _ := os.ReadFile("day12/inputs/input1.txt")
+	input, _ := os.ReadFile("day12/inputs/input.txt")
 
 	lines := strings.Split(strings.Trim(string(input), "\n"), "\n")
 	grid := make([][]int, len(lines))
 
-	var endX, endY int
-
-	contenders := make(map[Coordinate]bool)
+	end := Coordinate{-1, -1}
 
 	for r, line := range lines {
 		grid[r] = make([]int, len(line))
@@ -25,24 +22,11 @@ func Part2() {
 				grid[r][c] = 0
 			}
 			if ch == 'E' {
-				endX, endY = r, c
-				grid[r][c] = 'z' - 'a' + 1
-				// fmt.Printf("Coordinate of E is %d, %d\n", endX, endY)
-			}
-			if grid[r][c] == 0 {
-				contenders[Coordinate{r, c}] = true
+				end = Coordinate{r, c}
+				grid[r][c] = 26 // 'z' - 'a' + 1
 			}
 		}
 	}
 
-	answer := math.MaxFloat64
-	for k := range contenders {
-		// fmt.Printf("Comparing %v\n", k)
-		shortestPath := float64(findShortestPath(grid, k.x, k.y)[endX][endY])
-		if shortestPath != -1 {
-			answer = math.Min(answer, shortestPath)
-		}
-	}
-
-	fmt.Printf("%f\n", answer)
+	fmt.Printf("%d\n", findShortestPath(grid, end, 0, true))
 }

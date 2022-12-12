@@ -7,57 +7,56 @@ import (
 	"strings"
 )
 
+// Coordinate represents a point in the grid
 type Coordinate struct {
 	x int
 	y int
 }
 
 func Part1() {
-	input, _ := os.ReadFile("day12/inputs/input1.txt")
+	input, _ := os.ReadFile("day12/inputs/input.txt")
 
 	lines := strings.Split(strings.Trim(string(input), "\n"), "\n")
 	grid := make([][]int, len(lines))
 
-	var startX, startY int
-	var endX, endY int
-
+	start := Coordinate{-1, -1}
 	for r, line := range lines {
 		grid[r] = make([]int, len(line))
 		for c, ch := range line {
 			grid[r][c] = int(ch) - 'a'
 			if ch == 'S' {
-				startX, startY = r, c
+				start = Coordinate{r, c}
 				grid[r][c] = 0
 			}
 			if ch == 'E' {
-				endX, endY = r, c
-				grid[r][c] = 'z' - 'a' + 1
-				// fmt.Printf("Coordinate of E is %d, %d\n", endX, endY)
+				grid[r][c] = 26 // 'z' - 'a' + 1
 			}
 		}
 	}
 
-	shortestPaths := findShortestPath(grid, startX, startY)
+	shortestPaths := findShortestPath(grid, start, 26, false)
 
-	fmt.Printf("%d\n", shortestPaths[endX][endY])
+	fmt.Printf("%d\n", shortestPaths)
 }
 
-func findShortestPath(grid [][]int, x, y int) [][]int {
+func findShortestPath(grid [][]int, start Coordinate, endValue int, goingDown bool) int {
 
 	unvisited := make(map[Coordinate]bool)
 
 	// Initialize the answers grid, where answers[r][c] contains the least amount of steps to that
-	// position (r, c)
-	answers := make([][]int, len(grid))
+	// position (r, c). Floats because I don't like casting my ints to floats and back to ints.
+	answers := make([][]float64, len(grid))
 	for row := range answers {
-		answers[row] = make([]int, len(grid[0]))
+		answers[row] = make([]float64, len(grid[0]))
 		for col := range answers[row] {
-			answers[row][col] = -1
+			answers[row][col] = -1.0
 			unvisited[Coordinate{row, col}] = true
 		}
 	}
-	answers[x][y] = 0
-	current := Coordinate{x, y}
+	answers[start.x][start.y] = 0
+	// Because positions are unweighted, we can use BFS instead of Djikstra's and consequently a
+	// FIFO queue instead of a min-heap.
+	queue := []Coordinate{{start.x, start.y}}
 
 	neighbors := []Coordinate{
 		{-1, 0},
@@ -66,52 +65,44 @@ func findShortestPath(grid [][]int, x, y int) [][]int {
 		{0, 1},
 	}
 
-	for len(unvisited) != 0 {
+	for len(queue) != 0 {
+		current := queue[0]
+
+		// Break early if we've reached the destination
+		if grid[current.x][current.y] == endValue {
+			return int(answers[current.x][current.y])
+		}
+
 		for _, neighbor := range neighbors {
 			neighborX, neighborY := current.x-neighbor.x, current.y-neighbor.y
-			// if neighborX == 4 && neighborY == 5 {
-			// 	fmt.Printf("%d", answers[neighborX][neighborY])
-			// }
 			if neighborX < 0 || neighborY < 0 || neighborX == len(grid) || neighborY == len(grid[0]) {
 				continue
 			}
-			if grid[neighborX][neighborY]-grid[current.x][current.y] > 1 {
+
+			// To reduce time in part 2, I add goingDown, which allows us to find the path from
+			// the end to the first 'a'; this requires checking the opposite of the requirement
+			// that each next step must be at MAX the current height + 1(each next step must be at
+			// MIN 1 step lower)
+			stepDistance := grid[neighborX][neighborY] - grid[current.x][current.y]
+			if goingDown {
+				stepDistance = grid[current.x][current.y] - grid[neighborX][neighborY]
+			}
+			if stepDistance > 1 {
 				continue
-			} else if answers[neighborX][neighborY] == -1 {
-				//fmt.Printf("Setting %d, %d to %d\n", neighborX, neighborY, answers[current.x][current.y]+1)
+			} else if answers[neighborX][neighborY] == -1.0 {
 				answers[neighborX][neighborY] = answers[current.x][current.y] + 1
-			} else {
-				answers[neighborX][neighborY] = int(math.Min(float64(answers[neighborX][neighborY]), float64(answers[current.x][current.y]+1)))
-			}
-		}
-
-		delete(unvisited, current)
-
-		// for row := range answers {
-		// 	for col := range answers[row] {
-		// 		fmt.Printf("%d ", answers[row][col])
-		// 	}
-		// 	fmt.Println()
-		// }
-
-		// This should be turned into a heap for better completion
-		if len(unvisited) != 0 {
-			lowestVisited := -1
-			newX, newY := -1, -1
-			for k := range unvisited {
-				// fmt.Printf("%v\n", k)
-				if answers[k.x][k.y] != -1 && (lowestVisited == -1 || answers[k.x][k.y] < lowestVisited) {
-					lowestVisited = answers[k.x][k.y]
-					newX, newY = k.x, k.y
+				// Add the neighboring node to the queue if unvisited
+				if _, ok := unvisited[Coordinate{neighborX, neighborY}]; ok {
+					queue = append(queue, Coordinate{neighborX, neighborY})
 				}
+			} else {
+				answers[neighborX][neighborY] = math.Min(answers[neighborX][neighborY], answers[current.x][current.y]+1)
 			}
-			//fmt.Printf("Not empty! New coordinates are %d %d\n", newX, newY)
-			if newX == -1 || newY == -1 {
-				break
-			}
-			current = Coordinate{newX, newY}
 		}
+
+		delete(unvisited, queue[0])
+		queue = queue[1:]
 	}
 
-	return answers
+	return -1
 }
