@@ -36,7 +36,7 @@ func Part1() {
 
 	rockCount := 0
 
-	grid := [15000][7]int{}
+	grid := [60000][7]int{}
 	for i := 0; i < 7; i++ {
 		grid[0][i] = 1
 	}
@@ -47,7 +47,7 @@ func Part1() {
 	pattern := strings.Trim(string(input), "\n")
 	for index := 0; ; index++ {
 		direction := pattern[index%len(pattern)]
-		if rockCount == 5000 {
+		if rockCount == 10000 {
 			break
 		}
 
@@ -77,7 +77,7 @@ func Part1() {
 	fmt.Println(max)
 }
 
-func Shift(direction byte, rock int, lowerLeft Coordinate, grid *[15000][7]int) Coordinate {
+func Shift(direction byte, rock int, lowerLeft Coordinate, grid *[60000][7]int) Coordinate {
 
 	newLeft := Coordinate{lowerLeft.x, lowerLeft.y}
 	if direction == '<' {
@@ -127,7 +127,7 @@ func Shift(direction byte, rock int, lowerLeft Coordinate, grid *[15000][7]int) 
 	return lowerLeft
 }
 
-func Lower(rock int, lowerLeft Coordinate, grid *[15000][7]int) int {
+func Lower(rock int, lowerLeft Coordinate, grid *[60000][7]int) int {
 	switch rock {
 	case 0:
 		for i := lowerLeft.x; i < lowerLeft.x+4; i++ {
