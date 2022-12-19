@@ -31,3 +31,4 @@ $ for day in 0{8..9} {10..25}; do ./replace dayXX day${day} day${day}/; done
  - Early days were just learning syntax and how to use external libraries (and realizing Go doesn't have built in sets/stacks)
  - Day 7 is when I created a tree and is really the first time implemented a sort of class like thing in Go
  - Day 11 was interesting; learned structs generally copy when being assigned to another variable or looping with the `range` keyword; to avoid this, we can use `&` and index into the array with a traditional loop, respectively. Also learned that closures are a thing
+ - AoC 2022 started to have hands day 16; my part 1 code didn't even work on the example but gave me the right answer
