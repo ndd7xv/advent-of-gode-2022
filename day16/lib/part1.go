@@ -32,19 +32,15 @@ type Answer struct {
 var cache map[Answer]int
 
 func Part1() {
-	input, _ := os.ReadFile("day16/inputs/test.txt")
+	input, _ := os.ReadFile("day16/inputs/input1.txt")
 
 	cache = make(map[Answer]int)
 
 	nodes := ParseInput(string(input))
-	// on := make(map[string]bool)
 
 	fmt.Printf("%d\n", maxPressure("AA", 30, []string{}, nodes))
 }
 
-// This does NOT give the right answer for the example, and consequently I think it was mostly
-// luck that I got this part. I'll describe an alternative/fix after I'm done with part 2 and
-// have look at other solutions after that
 func maxPressure(start string, remaining int, opened []string, nodes map[string]*Node) int {
 	openedAsString := strings.Join(opened, " ")
 	if answer, exists := cache[Answer{start, remaining, openedAsString}]; exists {
@@ -96,7 +92,7 @@ func ParseInput(input string) map[string]*Node {
 		for i, word := range words {
 			if strings.HasPrefix(word, "rate=") {
 				flowRate, _ = strconv.Atoi(word[5 : len(word)-1])
-			} else if strings.HasPrefix(word, "valves") {
+			} else if strings.HasPrefix(word, "valve") {
 				for _, valve := range words[i+1:] {
 					valve = strings.TrimSuffix(valve, ",")
 					if _, ok := nodes[valve]; !ok {
